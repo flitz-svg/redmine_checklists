@@ -1,6 +1,6 @@
 class CreateChecklistItems < ActiveRecord::Migration[7.2]
   def change
-    create_table :checklist_items do |t|
+    create_table :checklist_items, if_not_exists: true do |t|
       t.integer :checklist_id, null: false
       t.string  :subject,      null: false, limit: 255
       t.boolean :checked,      null: false, default: false
@@ -8,6 +8,6 @@ class CreateChecklistItems < ActiveRecord::Migration[7.2]
       t.timestamps null: false
     end
 
-    add_index :checklist_items, :checklist_id
+    add_index :checklist_items, :checklist_id unless index_exists?(:checklist_items, :checklist_id)
   end
 end
