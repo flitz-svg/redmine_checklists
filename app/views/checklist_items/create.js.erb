@@ -1,0 +1,17 @@
+var ul = document.getElementById('checklist-items-<%= @item.checklist_id %>');
+if (ul) {
+  ul.insertAdjacentHTML('beforeend',
+    '<%= j render(partial: "checklist_items/item",
+                  locals:  { item: @item, can_edit: true }) %>');
+}
+
+var form = document.querySelector('.checklist-add-item-form[data-checklist-id="<%= @item.checklist_id %>"]');
+if (form) {
+  form.reset();
+  form.querySelector('.checklist-item-input').focus();
+}
+
+RedmineChecklists.updateProgress('<%= @item.checklist_id %>',
+                                 <%= @item.checklist.progress_percent %>,
+                                 <%= @item.checklist.checked_count %>,
+                                 <%= @item.checklist.total_count %>);

@@ -1,0 +1,7 @@
+es:
+  label_checklists:              "Checklists"
+  label_checklist_title_placeholder: "Título del checklist…"
+  label_checklist_add_item:      "Agregar elemento…"
+  label_toggle_item:             "Marcar / desmarcar"
+  button_add_checklist:          "Agregar checklist"
+  button_create_checklist:       "Crear checklist"

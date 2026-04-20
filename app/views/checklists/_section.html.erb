@@ -1,0 +1,32 @@
+<% checklists = issue.checklists.includes(:checklist_items).order(:position) %>
+<% can_edit   = issue.visible? && issue.editable? %>
+
+<% if checklists.any? || can_edit %>
+  <% content_for :header_tags do %>
+    <%= stylesheet_link_tag  'redmine_checklists', plugin: 'redmine_checklists' %>
+    <%= javascript_include_tag 'redmine_checklists', plugin: 'redmine_checklists' %>
+  <% end %>
+
+  <div id="checklists-section">
+    <div class="checklists-header">
+      <strong><%= l(:label_checklists) %></strong>
+      <% if can_edit %>
+        <a href="#" class="icon icon-add" id="btn-add-checklist" title="<%= l(:button_add_checklist) %>">
+          <%= l(:button_add_checklist) %>
+        </a>
+      <% end %>
+    </div>
+
+    <div id="checklists-list">
+      <%= render partial: 'checklists/checklist',
+                 collection: checklists,
+                 as: :checklist,
+                 locals: { issue: issue, can_edit: can_edit } %>
+    </div>
+
+    <% if can_edit %>
+      <div id="new-checklist-forms"></div>
+      <%= render partial: 'checklists/new_form', locals: { issue: issue } %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,218 @@
+/* ── Redmine Checklists plugin ─────────────────────────────────────────────── */
+
+/* Section wrapper */
+#checklists-section {
+  margin-top: 10px;
+}
+
+.checklists-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.9em;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.checklists-header strong {
+  flex: 1;
+  font-size: 1em;
+  color: #333;
+}
+
+/* ── Individual checklist block ────────────────────────────────────────────── */
+
+.checklist-block {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.checklist-block-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.checklist-block-title {
+  flex: 1;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #333;
+  cursor: default;
+}
+
+.checklist-block-progress-label {
+  font-size: 0.8em;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* ── Progress bar ──────────────────────────────────────────────────────────── */
+
+.checklist-progress-bar {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+
+.checklist-progress-fill {
+  height: 100%;
+  background: #629632;   /* Redmine's green */
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* ── Items list ────────────────────────────────────────────────────────────── */
+
+.checklist-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 0.85em;
+  color: #333;
+  border-bottom: 1px dotted #eee;
+}
+
+.checklist-item:last-child {
+  border-bottom: none;
+}
+
+.checklist-item input[type="checkbox"] {
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #629632;
+}
+
+.checklist-item-subject {
+  flex: 1;
+  word-break: break-word;
+}
+
+.checklist-item--checked .checklist-item-subject {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.checklist-item-del {
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.checklist-item:hover .checklist-item-del {
+  opacity: 1;
+}
+
+/* ── Add item row ──────────────────────────────────────────────────────────── */
+
+.checklist-add-item-row {
+  margin-top: 6px;
+}
+
+.checklist-add-item-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checklist-item-input {
+  flex: 1;
+  font-size: 0.85em;
+  padding: 3px 6px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  height: 24px;
+}
+
+.checklist-item-input:focus {
+  outline: none;
+  border-color: #628db6;
+  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+}
+
+/* ── Inline title edit ─────────────────────────────────────────────────────── */
+
+.checklist-inline-edit {
+  margin-bottom: 4px;
+}
+
+.checklist-title-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checklist-title-input {
+  flex: 1;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 3px 6px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  height: 26px;
+}
+
+.checklist-title-input:focus {
+  outline: none;
+  border-color: #628db6;
+  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+}
+
+/* ── New checklist form ────────────────────────────────────────────────────── */
+
+.checklist-new-form {
+  margin-top: 6px;
+  padding: 8px;
+  background: #f0f6ff;
+  border: 1px dashed #628db6;
+  border-radius: 3px;
+}
+
+.checklist-new-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.checklist-new-title-input {
+  font-size: 0.9em;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checklist-new-title-input:focus {
+  outline: none;
+  border-color: #628db6;
+  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+}
+
+.checklist-new-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Status icon (read-only mode) ──────────────────────────────────────────── */
+
+.checklist-item-status-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}

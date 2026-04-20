@@ -1,0 +1,23 @@
+<li class="checklist-item <%= 'checklist-item--checked' if item.checked %>"
+    id="checklist-item-<%= item.id %>">
+  <% if can_edit %>
+    <input type="checkbox"
+           class="checklist-item-toggle"
+           data-item-id="<%= item.id %>"
+           data-checklist-id="<%= item.checklist_id %>"
+           <%= 'checked' if item.checked %>
+           title="<%= l(:label_toggle_item) %>">
+  <% else %>
+    <span class="checklist-item-status-icon <%= item.checked ? 'icon icon-checked' : 'icon icon-cancel' %>"></span>
+  <% end %>
+  <span class="checklist-item-subject"><%= h(item.subject) %></span>
+  <% if can_edit %>
+    <%= link_to '',
+          checklist_item_path(item),
+          method: :delete,
+          data:   { confirm: l(:text_are_you_sure) },
+          class:  'icon icon-del checklist-item-del',
+          remote: true,
+          title:  l(:button_delete) %>
+  <% end %>
+</li>

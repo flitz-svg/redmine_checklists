@@ -1,0 +1,70 @@
+<div class="checklist-block" id="checklist-<%= checklist.id %>">
+  <div class="checklist-block-header">
+    <span class="checklist-block-title" data-checklist-id="<%= checklist.id %>">
+      <%= h(checklist.title) %>
+    </span>
+    <span class="checklist-block-progress-label">
+      <%= checklist.checked_count %>/<%= checklist.total_count %>
+    </span>
+    <% if can_edit %>
+      <a href="#"
+         class="icon icon-edit checklist-edit-title-btn"
+         data-checklist-id="<%= checklist.id %>"
+         title="<%= l(:button_edit) %>"></a>
+      <%= link_to '',
+            checklist_path(checklist),
+            method: :delete,
+            data:   { confirm: l(:text_are_you_sure) },
+            class:  'icon icon-del',
+            remote: true,
+            title:  l(:button_delete) %>
+    <% end %>
+  </div>
+
+  <% if checklist.total_count > 0 %>
+    <div class="checklist-progress-bar">
+      <div class="checklist-progress-fill"
+           id="checklist-progress-fill-<%= checklist.id %>"
+           style="width: <%= checklist.progress_percent %>%"></div>
+    </div>
+  <% end %>
+
+  <% if can_edit %>
+    <div class="checklist-inline-edit" id="checklist-title-form-<%= checklist.id %>" style="display:none;">
+      <%= form_with url: checklist_path(checklist), method: :patch, remote: true,
+                    html: { class: 'checklist-title-form' },
+                    data: { checklist_id: checklist.id } do |f| %>
+        <%= f.text_field :title,
+              value: checklist.title,
+              maxlength: 255,
+              class: 'checklist-title-input',
+              required: true %>
+        <%= f.submit l(:button_save), class: 'button-small' %>
+        <a href="#" class="checklist-cancel-edit"><%= l(:button_cancel) %></a>
+      <% end %>
+    </div>
+  <% end %>
+
+  <ul class="checklist-items" id="checklist-items-<%= checklist.id %>">
+    <% checklist.checklist_items.each do |item| %>
+      <%= render partial: 'checklist_items/item',
+                 locals: { item: item, can_edit: can_edit } %>
+    <% end %>
+  </ul>
+
+  <% if can_edit %>
+    <div class="checklist-add-item-row">
+      <%= form_with url: checklist_checklist_items_path(checklist), remote: true,
+                    html:  { class: 'checklist-add-item-form',
+                             data: { checklist_id: checklist.id } } do |f| %>
+        <%= f.text_field :subject,
+              placeholder: l(:label_checklist_add_item),
+              maxlength: 255,
+              class: 'checklist-item-input',
+              required: true,
+              autocomplete: 'off' %>
+        <%= f.submit l(:button_add), class: 'button-small' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
