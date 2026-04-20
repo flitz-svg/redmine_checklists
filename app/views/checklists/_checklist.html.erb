@@ -34,8 +34,8 @@
 
   <% if can_edit %>
     <div class="checklist-add-item-row">
-      <%= form_with url: checklist_checklist_items_path(checklist), method: :post,
-                    data: { turbo: false },
+      <%= form_with url: checklist_checklist_items_path(checklist), scope: :checklist_item,
+                    method: :post, data: { turbo: false },
                     html: { class: 'checklist-add-item-form' } do |f| %>
         <%= f.text_field :subject,
               placeholder: l(:label_checklist_add_item),
