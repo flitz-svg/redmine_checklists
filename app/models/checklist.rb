@@ -5,7 +5,7 @@ class Checklist < ActiveRecord::Base
   validates :title,    presence: true, length: { maximum: 255 }
   validates :issue_id, presence: true
 
-  acts_as_list scope: :issue
+  before_create :set_position
 
   def checked_count
     if checklist_items.loaded?
@@ -22,5 +22,12 @@ class Checklist < ActiveRecord::Base
   def progress_percent
     return 0 if total_count.zero?
     (checked_count.to_f / total_count * 100).round
+  end
+
+  private
+
+  def set_position
+    last = self.class.where(issue_id: issue_id).maximum(:position) || -1
+    self.position = last + 1
   end
 end
