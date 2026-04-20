@@ -10,7 +10,7 @@ require File.join(File.dirname(__FILE__), 'lib', 'redmine_checklists', 'hooks')
 
 Rails.application.config.after_initialize do
   Issue.class_eval do
-    has_many :checklists, -> { order(:position) }, dependent: :destroy,
-             class_name: 'Checklist' unless reflect_on_association(:checklists)
+    has_many :issue_checklists, -> { order(:position) },
+             class_name: 'IssueChecklist', dependent: :destroy unless reflect_on_association(:issue_checklists)
   end
 end

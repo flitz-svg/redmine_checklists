@@ -1,4 +1,4 @@
-<% checklists = issue.checklists.includes(:checklist_items).order(:position) %>
+<% checklists = issue.issue_checklists.includes(:issue_checklist_items).order(:position) %>
 <% can_edit   = issue.visible? && issue.editable? %>
 
 <% if checklists.any? || can_edit %>
@@ -25,7 +25,6 @@
     </div>
 
     <% if can_edit %>
-      <div id="new-checklist-forms"></div>
       <%= render partial: 'checklists/new_form', locals: { issue: issue } %>
     <% end %>
   </div>

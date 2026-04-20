@@ -26,7 +26,7 @@
   <% end %>
 
   <ul class="checklist-items" id="checklist-items-<%= checklist.id %>">
-    <% checklist.checklist_items.each do |item| %>
+    <% checklist.issue_checklist_items.each do |item| %>
       <%= render partial: 'checklist_items/item',
                  locals: { item: item, can_edit: can_edit } %>
     <% end %>

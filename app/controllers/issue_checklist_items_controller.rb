@@ -1,11 +1,11 @@
-class ChecklistItemsController < ApplicationController
+class IssueChecklistItemsController < ApplicationController
   before_action :require_login
   before_action :find_checklist, only: [:create]
   before_action :find_item,      only: [:destroy, :toggle]
   before_action :authorize_edit
 
   def create
-    @item = @checklist.checklist_items.build(item_params)
+    @item = @checklist.issue_checklist_items.build(item_params)
     if @item.save
       redirect_to issue_path(@checklist.issue)
     else
@@ -15,13 +15,13 @@ class ChecklistItemsController < ApplicationController
   end
 
   def destroy
-    @checklist = @item.checklist
+    @checklist = @item.issue_checklist
     @item.destroy
     redirect_to issue_path(@checklist.issue)
   end
 
   def toggle
-    @checklist = @item.checklist
+    @checklist = @item.issue_checklist
     @item.toggle!
     render json: {
       checked:       @item.checked,
@@ -36,15 +36,15 @@ class ChecklistItemsController < ApplicationController
   private
 
   def find_checklist
-    @checklist = Checklist.find(params[:checklist_id])
+    @checklist = IssueChecklist.find(params[:checklist_id])
     @issue     = @checklist.issue
   rescue ActiveRecord::RecordNotFound
     render_404
   end
 
   def find_item
-    @item  = ChecklistItem.find(params[:id])
-    @issue = @item.checklist.issue
+    @item  = IssueChecklistItem.find(params[:id])
+    @issue = @item.issue_checklist.issue
   rescue ActiveRecord::RecordNotFound
     render_404
   end

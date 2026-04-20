@@ -1,11 +1,11 @@
-class ChecklistsController < ApplicationController
+class IssueChecklistsController < ApplicationController
   before_action :require_login
   before_action :find_issue,     only: [:create]
   before_action :find_checklist, only: [:destroy]
   before_action :authorize_edit
 
   def create
-    @checklist = @issue.checklists.build(checklist_params)
+    @checklist = @issue.issue_checklists.build(checklist_params)
     if @checklist.save
       redirect_to issue_path(@issue)
     else
@@ -29,7 +29,7 @@ class ChecklistsController < ApplicationController
   end
 
   def find_checklist
-    @checklist = Checklist.find(params[:id])
+    @checklist = IssueChecklist.find(params[:id])
     @issue     = @checklist.issue
   rescue ActiveRecord::RecordNotFound
     render_404

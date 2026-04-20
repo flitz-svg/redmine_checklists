@@ -1,6 +1,6 @@
-class Checklist < ActiveRecord::Base
+class IssueChecklist < ActiveRecord::Base
   belongs_to :issue
-  has_many   :checklist_items, -> { order(:position) }, dependent: :destroy
+  has_many   :issue_checklist_items, -> { order(:position) }, dependent: :destroy
 
   validates :title,    presence: true, length: { maximum: 255 }
   validates :issue_id, presence: true
@@ -8,15 +8,15 @@ class Checklist < ActiveRecord::Base
   before_create :set_position
 
   def checked_count
-    if checklist_items.loaded?
-      checklist_items.count(&:checked)
+    if issue_checklist_items.loaded?
+      issue_checklist_items.count(&:checked)
     else
-      checklist_items.where(checked: true).count
+      issue_checklist_items.where(checked: true).count
     end
   end
 
   def total_count
-    checklist_items.loaded? ? checklist_items.length : checklist_items.count
+    issue_checklist_items.loaded? ? issue_checklist_items.length : issue_checklist_items.count
   end
 
   def progress_percent
