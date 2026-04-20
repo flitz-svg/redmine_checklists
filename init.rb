@@ -6,11 +6,11 @@ Redmine::Plugin.register :redmine_checklists do
   requires_redmine version_or_higher: '5.0'
 end
 
-Rails.application.config.to_prepare do
+require File.join(File.dirname(__FILE__), 'lib', 'redmine_checklists', 'hooks')
+
+Rails.application.config.after_initialize do
   Issue.class_eval do
     has_many :checklists, -> { order(:position) }, dependent: :destroy,
              class_name: 'Checklist' unless reflect_on_association(:checklists)
   end
-
-  require File.join(File.dirname(__FILE__), 'lib', 'redmine_checklists', 'hooks')
 end
