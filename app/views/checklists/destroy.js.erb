@@ -1,6 +1,0 @@
-var block = document.getElementById('checklist-<%= @checklist.id %>');
-if (block) {
-  block.style.transition = 'opacity 0.2s';
-  block.style.opacity    = '0';
-  setTimeout(function() { block.remove(); }, 220);
-}

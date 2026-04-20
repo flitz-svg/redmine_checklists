@@ -1,6 +1,7 @@
 <div class="checklist-new-form" id="checklist-new-form" style="display:none;">
-  <%= form_with url: issue_checklists_path(issue), remote: true,
-                html: { class: 'new-checklist-form', id: 'new-checklist-form' } do |f| %>
+  <%= form_with url: issue_checklists_path(issue), method: :post,
+                data: { turbo: false },
+                html: { class: 'new-checklist-form' } do |f| %>
     <div class="checklist-new-form-fields">
       <%= f.text_field :title,
             placeholder: l(:label_checklist_title_placeholder),

@@ -12,12 +12,12 @@
   <% end %>
   <span class="checklist-item-subject"><%= h(item.subject) %></span>
   <% if can_edit %>
-    <%= link_to '',
+    <%= button_to '',
           checklist_item_path(item),
           method: :delete,
           data:   { confirm: l(:text_are_you_sure) },
           class:  'icon icon-del checklist-item-del',
-          remote: true,
-          title:  l(:button_delete) %>
+          title:  l(:button_delete),
+          form:   { data: { turbo: false }, style: 'display:inline;margin:0' } %>
   <% end %>
 </li>

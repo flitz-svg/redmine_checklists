@@ -1,8 +1,0 @@
-var titleEl = document.querySelector('[data-checklist-id="<%= @checklist.id %>"].checklist-block-title');
-if (titleEl) titleEl.textContent = <%= @checklist.title.to_json %>;
-
-var editForm = document.getElementById('checklist-title-form-<%= @checklist.id %>');
-if (editForm) editForm.style.display = 'none';
-
-var titleSpan = document.querySelector('[data-checklist-id="<%= @checklist.id %>"].checklist-block-title');
-if (titleSpan) titleSpan.style.display = '';

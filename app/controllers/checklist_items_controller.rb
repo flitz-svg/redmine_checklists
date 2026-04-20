@@ -7,31 +7,28 @@ class ChecklistItemsController < ApplicationController
   def create
     @item = @checklist.checklist_items.build(item_params)
     if @item.save
-      respond_to do |format|
-        format.js
-        format.html { redirect_to issue_path(@checklist.issue) }
-      end
+      redirect_to issue_path(@checklist.issue)
     else
-      respond_to do |format|
-        format.js   { render :error, status: :unprocessable_entity }
-        format.html { redirect_to issue_path(@checklist.issue), alert: @item.errors.full_messages.join(', ') }
-      end
+      redirect_to issue_path(@checklist.issue),
+                  flash: { error: @item.errors.full_messages.join(', ') }
     end
   end
 
   def destroy
     @checklist = @item.checklist
     @item.destroy
-    respond_to do |format|
-      format.js
-      format.html { redirect_to issue_path(@checklist.issue) }
-    end
+    redirect_to issue_path(@checklist.issue)
   end
 
   def toggle
     @checklist = @item.checklist
     @item.toggle!
-    render json: { checked: @item.checked, progress: @checklist.progress_percent }
+    render json: {
+      checked:       @item.checked,
+      progress:      @checklist.progress_percent,
+      checked_count: @checklist.checked_count,
+      total_count:   @checklist.total_count
+    }
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
