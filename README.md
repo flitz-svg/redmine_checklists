@@ -34,7 +34,7 @@ Multiple checklists can coexist within the same issue, each with its own title, 
 
    ```bash
    cd /path/to/redmine/plugins
-   git clone https://github.com/YOUR_USER/redmine_checklists.git
+   git clone https://github.com/flitz-svg/redmine_checklists.git
    ```
 
 2. Run the database migrations:
