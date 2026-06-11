@@ -1,6 +1,6 @@
 class IssueChecklistItemsController < ApplicationController
   before_action :require_login
-  before_action :find_checklist, only: [:create]
+  before_action :find_checklist, only: [:create, :bulk_create]
   before_action :find_item,      only: [:destroy, :toggle]
   before_action :authorize_edit
 
@@ -12,6 +12,26 @@ class IssueChecklistItemsController < ApplicationController
       redirect_to issue_path(@checklist.issue),
                   flash: { error: @item.errors.full_messages.join(', ') }
     end
+  end
+
+  def bulk_create
+    raw = if params.dig(:checklist_item, :file).present?
+      params[:checklist_item][:file].read.force_encoding('UTF-8')
+    else
+      params.dig(:checklist_item, :subjects).to_s
+    end
+
+    subjects = raw.split(/\r?\n/).map(&:strip).reject(&:empty?)
+
+    if subjects.empty?
+      return redirect_to issue_path(@checklist.issue),
+                         flash: { error: l(:error_checklist_no_items) }
+    end
+
+    subjects.each { |s| @checklist.issue_checklist_items.create!(subject: s.slice(0, 255)) }
+    redirect_to issue_path(@checklist.issue)
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to issue_path(@checklist.issue), flash: { error: e.message }
   end
 
   def destroy

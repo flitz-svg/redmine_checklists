@@ -33,18 +33,52 @@
   </ul>
 
   <% if can_edit %>
-    <div class="checklist-add-item-row">
-      <%= form_with url: checklist_checklist_items_path(checklist), scope: :checklist_item,
-                    method: :post, data: { turbo: false },
-                    html: { class: 'checklist-add-item-form' } do |f| %>
-        <%= f.text_field :subject,
-              placeholder: l(:label_checklist_add_item),
-              maxlength: 255,
-              class: 'checklist-item-input',
-              required: true,
-              autocomplete: 'off' %>
-        <%= f.submit l(:button_add), class: 'button-small' %>
-      <% end %>
+    <div class="checklist-add-area" id="checklist-add-area-<%= checklist.id %>">
+      <div class="checklist-add-toggle-row">
+        <a href="#"
+           class="checklist-add-toggle icon icon-add"
+           data-panel="checklist-add-panel-<%= checklist.id %>">
+          <%= l(:label_checklist_add_items) %>
+        </a>
+      </div>
+
+      <div class="checklist-add-panel" id="checklist-add-panel-<%= checklist.id %>" style="display:none;">
+        <%= form_with url: bulk_checklist_items_path(checklist),
+                      scope: :checklist_item,
+                      method: :post,
+                      data:   { turbo: false },
+                      html:   { class: 'checklist-bulk-form', multipart: true } do |f| %>
+          <textarea name="checklist_item[subjects]"
+                    id="checklist-bulk-textarea-<%= checklist.id %>"
+                    class="checklist-bulk-textarea"
+                    placeholder="<%= l(:label_checklist_items_placeholder) %>"
+                    rows="4"></textarea>
+
+          <div class="checklist-file-row">
+            <label class="checklist-file-label"
+                   for="checklist-file-<%= checklist.id %>">
+              <span class="icon icon-attachment"></span>
+              <%= l(:label_checklist_import_file) %>
+              <input type="file"
+                     id="checklist-file-<%= checklist.id %>"
+                     name="checklist_item[file]"
+                     accept=".txt,.csv"
+                     class="checklist-file-input"
+                     data-textarea="checklist-bulk-textarea-<%= checklist.id %>">
+            </label>
+          </div>
+
+          <div class="checklist-add-actions">
+            <%= f.submit l(:button_save), class: 'button' %>
+            <a href="#"
+               class="checklist-add-cancel icon icon-cancel"
+               data-panel="checklist-add-panel-<%= checklist.id %>"
+               data-toggle="checklist-add-toggle-row-<%= checklist.id %>">
+              <%= l(:button_cancel) %>
+            </a>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

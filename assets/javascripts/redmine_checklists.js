@@ -45,10 +45,47 @@ var RedmineChecklists = (function () {
     });
   }
 
+  function openPanel(panelId) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.style.display = '';
+    var textarea = panel.querySelector('textarea');
+    if (textarea) textarea.focus();
+  }
+
+  function closePanel(panelId) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.style.display = 'none';
+    var textarea = panel.querySelector('textarea');
+    if (textarea) textarea.value = '';
+    var fileInput = panel.querySelector('input[type="file"]');
+    if (fileInput) fileInput.value = '';
+  }
+
+  function readFileIntoTextarea(fileInput) {
+    var file = fileInput.files[0];
+    if (!file) return;
+    var textareaId = fileInput.dataset.textarea;
+    var textarea   = textareaId ? document.getElementById(textareaId) : null;
+    if (!textarea) return;
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var existing = textarea.value.trim();
+      var incoming = e.target.result.trim();
+      textarea.value = existing ? existing + '\n' + incoming : incoming;
+      textarea.focus();
+    };
+    reader.readAsText(file, 'UTF-8');
+    fileInput.value = '';
+  }
+
   function bindEvents() {
     var section = document.getElementById('checklists-section');
     if (!section) return;
 
+    /* ── New checklist form toggle ─────────────────────────────────────────── */
     section.addEventListener('click', function (e) {
       var t = e.target;
 
@@ -57,6 +94,7 @@ var RedmineChecklists = (function () {
         var form = document.getElementById('checklist-new-form');
         if (form) { form.style.display = ''; form.querySelector('input[type=text]').focus(); }
         document.getElementById('btn-add-checklist').style.display = 'none';
+        return;
       }
 
       if (t.id === 'btn-cancel-checklist' || (t.closest && t.closest('#btn-cancel-checklist'))) {
@@ -65,12 +103,46 @@ var RedmineChecklists = (function () {
         if (form) form.style.display = 'none';
         var btn = document.getElementById('btn-add-checklist');
         if (btn) btn.style.display = '';
+        return;
+      }
+
+      /* ── Bulk add panel toggle ─────────────────────────────────────────── */
+      var toggleEl = t.classList.contains('checklist-add-toggle')
+        ? t
+        : (t.closest && t.closest('.checklist-add-toggle'));
+      if (toggleEl) {
+        e.preventDefault();
+        var panelId = toggleEl.dataset.panel;
+        openPanel(panelId);
+        toggleEl.closest('.checklist-add-toggle-row').style.display = 'none';
+        return;
+      }
+
+      var cancelEl = t.classList.contains('checklist-add-cancel')
+        ? t
+        : (t.closest && t.closest('.checklist-add-cancel'));
+      if (cancelEl) {
+        e.preventDefault();
+        var panelId = cancelEl.dataset.panel;
+        closePanel(panelId);
+        var area = cancelEl.closest('.checklist-add-area');
+        if (area) {
+          var toggleRow = area.querySelector('.checklist-add-toggle-row');
+          if (toggleRow) toggleRow.style.display = '';
+        }
       }
     });
 
+    /* ── Checkbox toggle ───────────────────────────────────────────────────── */
     section.addEventListener('change', function (e) {
       if (e.target.classList.contains('checklist-item-toggle')) {
         toggleItem(e.target.dataset.itemId, e.target.dataset.checklistId, e.target);
+        return;
+      }
+
+      /* ── File import ─────────────────────────────────────────────────────── */
+      if (e.target.classList.contains('checklist-file-input')) {
+        readFileIntoTextarea(e.target);
       }
     });
   }
