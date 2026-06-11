@@ -278,6 +278,13 @@
   gap: 8px;
 }
 
+/* ── Edit notes separator ──────────────────────────────────────────────────── */
+
+.checklists-edit-separator {
+  border-top: 1px solid #ddd;
+  margin: 10px 0 8px;
+}
+
 /* ── Status icon (read-only mode) ──────────────────────────────────────────── */
 
 .checklist-item-status-icon {

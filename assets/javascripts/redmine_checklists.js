@@ -7,22 +7,28 @@ var RedmineChecklists = (function () {
   }
 
   function updateProgress(checklistId, percent, checkedCount, totalCount) {
-    var fill  = document.getElementById('checklist-progress-fill-' + checklistId);
-    var label = document.querySelector('#checklist-' + checklistId + ' .checklist-block-progress-label');
+    document.querySelectorAll('[id="checklist-progress-fill-' + checklistId + '"]').forEach(function (fill) {
+      fill.style.width = percent + '%';
+    });
 
-    if (fill)  fill.style.width = percent + '%';
-    if (label) label.textContent = checkedCount + '/' + totalCount;
+    document.querySelectorAll('[id="checklist-' + checklistId + '"] .checklist-block-progress-label').forEach(function (label) {
+      label.textContent = checkedCount + '/' + totalCount;
+    });
 
-    if (!fill && totalCount > 0) {
-      var fillDiv = document.createElement('div');
-      fillDiv.className   = 'checklist-progress-fill';
-      fillDiv.id          = 'checklist-progress-fill-' + checklistId;
-      fillDiv.style.width = percent + '%';
-      var bar = document.createElement('div');
-      bar.className = 'checklist-progress-bar';
-      bar.appendChild(fillDiv);
-      var header = document.querySelector('#checklist-' + checklistId + ' .checklist-block-header');
-      if (header) header.insertAdjacentElement('afterend', bar);
+    if (totalCount > 0) {
+      document.querySelectorAll('[id="checklist-' + checklistId + '"]').forEach(function (block) {
+        if (!block.querySelector('.checklist-progress-fill')) {
+          var fillDiv = document.createElement('div');
+          fillDiv.className   = 'checklist-progress-fill';
+          fillDiv.id          = 'checklist-progress-fill-' + checklistId;
+          fillDiv.style.width = percent + '%';
+          var bar = document.createElement('div');
+          bar.className = 'checklist-progress-bar';
+          bar.appendChild(fillDiv);
+          var header = block.querySelector('.checklist-block-header');
+          if (header) header.insertAdjacentElement('afterend', bar);
+        }
+      });
     }
   }
 
@@ -36,8 +42,9 @@ var RedmineChecklists = (function () {
       return r.json();
     })
     .then(function (data) {
-      var li = document.getElementById('checklist-item-' + itemId);
-      if (li) li.classList.toggle('checklist-item--checked', data.checked);
+      document.querySelectorAll('[id="checklist-item-' + itemId + '"]').forEach(function (li) {
+        li.classList.toggle('checklist-item--checked', data.checked);
+      });
       updateProgress(checklistId, data.progress, data.checked_count, data.total_count);
     })
     .catch(function () {
@@ -81,50 +88,54 @@ var RedmineChecklists = (function () {
     fileInput.value = '';
   }
 
-  function bindEvents() {
-    var section = document.getElementById('checklists-section');
-    if (!section) return;
-
-    /* ── New checklist form toggle ─────────────────────────────────────────── */
+  function bindSection(section) {
     section.addEventListener('click', function (e) {
       var t = e.target;
 
-      if (t.id === 'btn-add-checklist' || (t.closest && t.closest('#btn-add-checklist'))) {
+      /* ── Add checklist button ─────────────────────────────────────────────── */
+      var addBtn = t.classList.contains('checklists-add-btn')
+        ? t
+        : (t.closest && t.closest('.checklists-add-btn'));
+      if (addBtn) {
         e.preventDefault();
-        var form = document.getElementById('checklist-new-form');
+        var form = document.getElementById(addBtn.dataset.target);
         if (form) { form.style.display = ''; form.querySelector('input[type=text]').focus(); }
-        document.getElementById('btn-add-checklist').style.display = 'none';
+        addBtn.style.display = 'none';
         return;
       }
 
-      if (t.id === 'btn-cancel-checklist' || (t.closest && t.closest('#btn-cancel-checklist'))) {
+      /* ── Cancel new checklist form ────────────────────────────────────────── */
+      var cancelBtn = t.classList.contains('checklists-cancel-btn')
+        ? t
+        : (t.closest && t.closest('.checklists-cancel-btn'));
+      if (cancelBtn) {
         e.preventDefault();
-        var form = document.getElementById('checklist-new-form');
+        var form = document.getElementById(cancelBtn.dataset.form);
+        var btn  = document.getElementById(cancelBtn.dataset.btn);
         if (form) form.style.display = 'none';
-        var btn = document.getElementById('btn-add-checklist');
-        if (btn) btn.style.display = '';
+        if (btn)  btn.style.display  = '';
         return;
       }
 
-      /* ── Bulk add panel toggle ─────────────────────────────────────────── */
+      /* ── Bulk add panel open ──────────────────────────────────────────────── */
       var toggleEl = t.classList.contains('checklist-add-toggle')
         ? t
         : (t.closest && t.closest('.checklist-add-toggle'));
       if (toggleEl) {
         e.preventDefault();
-        var panelId = toggleEl.dataset.panel;
-        openPanel(panelId);
-        toggleEl.closest('.checklist-add-toggle-row').style.display = 'none';
+        openPanel(toggleEl.dataset.panel);
+        var row = toggleEl.closest('.checklist-add-toggle-row');
+        if (row) row.style.display = 'none';
         return;
       }
 
+      /* ── Bulk add panel close ─────────────────────────────────────────────── */
       var cancelEl = t.classList.contains('checklist-add-cancel')
         ? t
         : (t.closest && t.closest('.checklist-add-cancel'));
       if (cancelEl) {
         e.preventDefault();
-        var panelId = cancelEl.dataset.panel;
-        closePanel(panelId);
+        closePanel(cancelEl.dataset.panel);
         var area = cancelEl.closest('.checklist-add-area');
         if (area) {
           var toggleRow = area.querySelector('.checklist-add-toggle-row');
@@ -133,18 +144,22 @@ var RedmineChecklists = (function () {
       }
     });
 
-    /* ── Checkbox toggle ───────────────────────────────────────────────────── */
     section.addEventListener('change', function (e) {
+      /* ── Item checkbox toggle ─────────────────────────────────────────────── */
       if (e.target.classList.contains('checklist-item-toggle')) {
         toggleItem(e.target.dataset.itemId, e.target.dataset.checklistId, e.target);
         return;
       }
 
-      /* ── File import ─────────────────────────────────────────────────────── */
+      /* ── File import ──────────────────────────────────────────────────────── */
       if (e.target.classList.contains('checklist-file-input')) {
         readFileIntoTextarea(e.target);
       }
     });
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('.checklists-section').forEach(bindSection);
   }
 
   if (document.readyState === 'loading') {
