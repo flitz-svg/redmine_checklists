@@ -16,8 +16,8 @@
        data-i18n-cancel="<%= l(:button_cancel) %>"
        data-i18n-delete="<%= l(:button_delete) %>">
 
-    <%# Hidden field inside the Redmine issue form — receives serialised JSON checklists %>
-    <input type="hidden" name="issue[checklists_data]" id="checklists-data-field" value="[]">
+    <%# Hidden field inside the Redmine issue form — top-level name to avoid issue attr conflicts %>
+    <input type="hidden" name="checklists_data" id="checklists-data-field" value="[]">
 
     <div class="checklists-header">
       <strong><%= l(:label_checklists) %></strong>

@@ -2,14 +2,16 @@ module RedmineChecklists
   class ControllerHooks < Redmine::Hook::Listener
     def controller_issues_new_after_save(context = {})
       process_checklists_data(context[:issue], context[:params])
+    rescue => e
+      Rails.logger.error "[RedmineChecklists] Unexpected error in after_save hook: #{e.message}\n#{e.backtrace&.first(5)&.join("\n")}"
     end
 
     private
 
     def process_checklists_data(issue, params)
-      return unless issue&.persisted?
+      return unless issue.is_a?(Issue) && issue.persisted?
 
-      raw = params.dig(:issue, :checklists_data).to_s
+      raw = params[:checklists_data].to_s
       return if raw.blank? || raw == '[]'
 
       data = JSON.parse(raw)
@@ -27,8 +29,8 @@ module RedmineChecklists
           checklist.issue_checklist_items.create!(subject: s)
         end
       end
-    rescue JSON::ParserError, ActiveRecord::RecordInvalid => e
-      Rails.logger.error "[RedmineChecklists] Failed to process checklists on issue create: #{e.message}"
+    rescue => e
+      Rails.logger.error "[RedmineChecklists] Failed to process checklists on issue create: #{e.message}\n#{e.backtrace&.first(3)&.join("\n")}"
     end
   end
 end
