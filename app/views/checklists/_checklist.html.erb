@@ -42,41 +42,39 @@
         </a>
       </div>
 
+      <%# No <form> here — uses AJAX to avoid nesting inside Redmine's own forms %>
       <div class="checklist-add-panel" id="checklist-add-panel-<%= checklist.id %>" style="display:none;">
-        <%= form_with url: bulk_checklist_items_path(checklist),
-                      scope: :checklist_item,
-                      method: :post,
-                      data:   { turbo: false },
-                      html:   { class: 'checklist-bulk-form', multipart: true } do |f| %>
-          <textarea name="checklist_item[subjects]"
-                    id="checklist-bulk-textarea-<%= checklist.id %>"
-                    class="checklist-bulk-textarea"
-                    placeholder="<%= l(:label_checklist_items_placeholder) %>"
-                    rows="4"></textarea>
+        <textarea id="checklist-bulk-textarea-<%= checklist.id %>"
+                  class="checklist-bulk-textarea"
+                  placeholder="<%= l(:label_checklist_items_placeholder) %>"
+                  rows="4"></textarea>
 
-          <div class="checklist-file-row">
-            <label class="checklist-file-label"
-                   for="checklist-file-<%= checklist.id %>">
-              <%= l(:label_checklist_import_file) %>
-              <input type="file"
-                     id="checklist-file-<%= checklist.id %>"
-                     name="checklist_item[file]"
-                     accept=".txt,.csv"
-                     class="checklist-file-input"
-                     data-textarea="checklist-bulk-textarea-<%= checklist.id %>">
-            </label>
-          </div>
+        <div class="checklist-file-row">
+          <label class="checklist-file-label"
+                 for="checklist-file-<%= checklist.id %>">
+            <%= l(:label_checklist_import_file) %>
+            <input type="file"
+                   id="checklist-file-<%= checklist.id %>"
+                   accept=".txt,.csv"
+                   class="checklist-file-input"
+                   data-textarea="checklist-bulk-textarea-<%= checklist.id %>">
+          </label>
+        </div>
 
-          <div class="checklist-add-actions">
-            <%= f.submit l(:button_save), class: 'button' %>
-            <a href="#"
-               class="checklist-add-cancel"
-               data-panel="checklist-add-panel-<%= checklist.id %>"
-               data-toggle="checklist-add-toggle-row-<%= checklist.id %>">
-              <%= l(:button_cancel) %>
-            </a>
-          </div>
-        <% end %>
+        <div class="checklist-add-actions">
+          <button type="button"
+                  class="button checklist-bulk-save-btn"
+                  data-url="<%= bulk_checklist_items_path(checklist) %>"
+                  data-textarea="checklist-bulk-textarea-<%= checklist.id %>"
+                  data-file="checklist-file-<%= checklist.id %>">
+            <%= l(:button_save) %>
+          </button>
+          <a href="#"
+             class="checklist-add-cancel"
+             data-panel="checklist-add-panel-<%= checklist.id %>">
+            <%= l(:button_cancel) %>
+          </a>
+        </div>
       </div>
     </div>
   <% end %>

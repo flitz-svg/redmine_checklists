@@ -155,6 +155,54 @@ var RedmineChecklists = (function () {
           var toggleRow = area.querySelector('.checklist-add-toggle-row');
           if (toggleRow) toggleRow.style.display = '';
         }
+        return;
+      }
+
+      /* Save bulk items via AJAX (no nested form) */
+      var bulkSave = t.classList.contains('checklist-bulk-save-btn')
+        ? t : (t.closest && t.closest('.checklist-bulk-save-btn'));
+      if (bulkSave) {
+        e.preventDefault();
+        var textarea  = document.getElementById(bulkSave.dataset.textarea);
+        var fileInput = document.getElementById(bulkSave.dataset.file);
+        var fd = new FormData();
+        if (fileInput && fileInput.files[0]) {
+          fd.append('checklist_item[file]', fileInput.files[0]);
+        } else {
+          fd.append('checklist_item[subjects]', textarea ? textarea.value : '');
+        }
+        bulkSave.disabled = true;
+        fetch(bulkSave.dataset.url, {
+          method: 'POST',
+          headers: { 'X-CSRF-Token': csrfToken() },
+          body: fd
+        }).then(function (r) {
+          if (r.ok) { window.location.reload(); }
+          else { bulkSave.disabled = false; }
+        }).catch(function () { bulkSave.disabled = false; });
+        return;
+      }
+
+      /* Create new checklist via AJAX (no nested form) */
+      var createBtn = t.classList.contains('checklist-create-btn')
+        ? t : (t.closest && t.closest('.checklist-create-btn'));
+      if (createBtn) {
+        e.preventDefault();
+        var titleInput = document.getElementById(createBtn.dataset.title);
+        var title = titleInput ? titleInput.value.trim() : '';
+        if (!title) { if (titleInput) titleInput.focus(); return; }
+        var fd2 = new FormData();
+        fd2.append('checklist[title]', title);
+        createBtn.disabled = true;
+        fetch(createBtn.dataset.url, {
+          method: 'POST',
+          headers: { 'X-CSRF-Token': csrfToken() },
+          body: fd2
+        }).then(function (r) {
+          if (r.ok) { window.location.reload(); }
+          else { createBtn.disabled = false; }
+        }).catch(function () { createBtn.disabled = false; });
+        return;
       }
     });
 
