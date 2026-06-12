@@ -1,3 +1,6 @@
+if (!window._RedmineChecklistsLoaded) {
+window._RedmineChecklistsLoaded = true;
+
 var RedmineChecklists = (function () {
   'use strict';
 
@@ -469,3 +472,5 @@ var RedmineChecklists = (function () {
 
   return { updateProgress: updateProgress };
 })();
+
+} // end _RedmineChecklistsLoaded guard
