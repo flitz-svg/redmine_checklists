@@ -1,30 +1,62 @@
 /* ── Redmine Checklists plugin ─────────────────────────────────────────────── */
 
-/* Section wrapper — clear floats so it lands below the split columns in forms */
+/* ── Section wrapper ───────────────────────────────────────────────────────── */
+
 .checklists-section {
   clear: both;
-  margin-top: 10px;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
 
 /* ── Header ────────────────────────────────────────────────────────────────── */
 
 .checklists-header {
   font-size: 0.9em;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
-/* Title and button sit inline, button immediately after the label */
 .checklists-header strong {
   font-size: 1em;
-  color: #333;
-  margin-right: 6px;
+  color: #555;
+  font-weight: bold;
+  margin-right: 4px;
 }
 
-/* ── Individual checklist block — no card, just native list feel ───────────── */
+/* ── Tabular form context (new issue / full edit form) ─────────────────────── */
+/*
+   Inside Redmine's .box.tabular the hook fires after the split columns.
+   We mimic the label (0–175 px) + value (starts at 180 px) layout manually
+   because .tabular p padding only auto-applies to <p> tags, not <div>.
+*/
+
+.tabular .checklists-section .checklists-header {
+  padding-left: 180px;
+  position: relative;
+  clear: left;
+  min-height: 1.8em;
+}
+
+.tabular .checklists-section .checklists-header strong {
+  position: absolute;
+  left: 0;
+  width: 175px;
+  text-align: right;
+  padding-right: 5px;
+  line-height: 1.8em;
+  color: #555;
+}
+
+/* Checklist blocks + new-form panel indented to match value column */
+.tabular .checklists-section [id^="checklists-list"],
+.tabular .checklists-section .checklist-new-form {
+  padding-left: 180px;
+  clear: left;
+}
+
+/* ── Individual checklist block ────────────────────────────────────────────── */
 
 .checklist-block {
   margin-bottom: 10px;
-  padding-left: 0;
 }
 
 .checklist-block-header {
@@ -157,23 +189,23 @@
   box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
 }
 
-/* ── File import row ───────────────────────────────────────────────────────── */
+/* ── File import ───────────────────────────────────────────────────────────── */
 
 .checklist-file-row {
   margin-top: 4px;
 }
 
+/* Simple text link — no sprite icon, fully visible in all contexts */
 .checklist-file-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.8em;
-  color: #555;
+  font-size: 0.85em;
+  color: #169;
   cursor: pointer;
+  text-decoration: underline;
+  font-weight: normal;
 }
 
 .checklist-file-label:hover {
-  color: #628db6;
+  color: #000;
 }
 
 .checklist-file-input {

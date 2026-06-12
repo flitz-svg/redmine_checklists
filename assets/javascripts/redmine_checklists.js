@@ -223,7 +223,7 @@ var RedmineChecklists = (function () {
              'placeholder="' + escHtml(t.itemsPlaceholder) + '"></textarea>' +
              '<div class="checklist-file-row">' +
              '<label class="checklist-file-label" for="vi-file-' + idx + '">' +
-             '<span class="icon icon-attachment"></span>' + escHtml(t.importFile) +
+             escHtml(t.importFile) +
              '<input type="file" id="vi-file-' + idx + '" class="checklist-file-input" ' +
              'accept=".txt,.csv" data-textarea="vi-textarea-' + idx + '"></label></div>' +
              '<div class="checklist-add-actions">' +
