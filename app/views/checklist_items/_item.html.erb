@@ -12,12 +12,10 @@
   <% end %>
   <span class="checklist-item-subject"><%= h(item.subject) %></span>
   <% if can_edit %>
-    <%= button_to '',
-          checklist_item_path(item),
-          method: :delete,
-          data:   { confirm: l(:text_are_you_sure) },
-          class:  'icon icon-del checklist-item-del',
-          title:  l(:button_delete),
-          form:   { data: { turbo: false }, style: 'display:inline;margin:0' } %>
+    <button type="button"
+            class="icon icon-del checklist-item-del"
+            data-url="<%= checklist_item_path(item) %>"
+            data-confirm="<%= l(:text_are_you_sure) %>"
+            title="<%= l(:button_delete) %>"></button>
   <% end %>
 </li>

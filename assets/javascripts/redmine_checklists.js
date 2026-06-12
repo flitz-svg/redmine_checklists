@@ -158,6 +158,32 @@ var RedmineChecklists = (function () {
         return;
       }
 
+      /* Delete checklist (AJAX) */
+      var delCL = t.classList.contains('checklist-delete-btn')
+        ? t : (t.closest && t.closest('.checklist-delete-btn'));
+      if (delCL) {
+        e.preventDefault();
+        if (delCL.dataset.confirm && !window.confirm(delCL.dataset.confirm)) return;
+        fetch(delCL.dataset.url, {
+          method: 'DELETE',
+          headers: { 'X-CSRF-Token': csrfToken() }
+        }).then(function (r) { if (r.ok) window.location.reload(); });
+        return;
+      }
+
+      /* Delete item (AJAX) */
+      var delIt = t.classList.contains('checklist-item-del')
+        ? t : (t.closest && t.closest('.checklist-item-del'));
+      if (delIt) {
+        e.preventDefault();
+        if (delIt.dataset.confirm && !window.confirm(delIt.dataset.confirm)) return;
+        fetch(delIt.dataset.url, {
+          method: 'DELETE',
+          headers: { 'X-CSRF-Token': csrfToken() }
+        }).then(function (r) { if (r.ok) window.location.reload(); });
+        return;
+      }
+
       /* Save bulk items via AJAX (no nested form) */
       var bulkSave = t.classList.contains('checklist-bulk-save-btn')
         ? t : (t.closest && t.closest('.checklist-bulk-save-btn'));
