@@ -175,10 +175,7 @@
 
 .checklist-add-panel {
   margin-top: 5px;
-  padding: 7px;
-  background: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  padding: 4px 0;
 }
 
 .checklist-bulk-textarea {
@@ -236,10 +233,7 @@
 
 .checklist-new-form {
   margin-top: 5px;
-  padding: 7px;
-  background: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  padding: 4px 0;
 }
 
 .checklist-new-form-fields {

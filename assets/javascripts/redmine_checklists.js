@@ -229,7 +229,7 @@ var RedmineChecklists = (function () {
              '<div class="checklist-add-actions">' +
              '<button type="button" class="button virtual-bulk-save-btn" data-idx="' + idx + '">' +
              escHtml(t.save) + '</button>' +
-             '<a href="#" class="checklist-add-cancel icon icon-cancel" data-panel="vi-bulk-' + idx + '">' +
+             '<a href="#" class="checklist-add-cancel" data-panel="vi-bulk-' + idx + '">' +
              escHtml(t.cancel) + '</a></div></div></div></div>';
     }
 
