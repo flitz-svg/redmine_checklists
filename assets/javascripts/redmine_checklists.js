@@ -167,7 +167,7 @@ var RedmineChecklists = (function () {
         fetch(delCL.dataset.url, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken() }
-        }).then(function (r) { if (r.ok) window.location.reload(); });
+        }).then(function (r) { if (r.ok) window.location.href = r.url; });
         return;
       }
 
@@ -180,7 +180,7 @@ var RedmineChecklists = (function () {
         fetch(delIt.dataset.url, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken() }
-        }).then(function (r) { if (r.ok) window.location.reload(); });
+        }).then(function (r) { if (r.ok) window.location.href = r.url; });
         return;
       }
 
@@ -203,7 +203,7 @@ var RedmineChecklists = (function () {
           headers: { 'X-CSRF-Token': csrfToken() },
           body: fd
         }).then(function (r) {
-          if (r.ok) { window.location.reload(); }
+          if (r.ok) { window.location.href = r.url; }
           else { bulkSave.disabled = false; }
         }).catch(function () { bulkSave.disabled = false; });
         return;
@@ -225,7 +225,7 @@ var RedmineChecklists = (function () {
           headers: { 'X-CSRF-Token': csrfToken() },
           body: fd2
         }).then(function (r) {
-          if (r.ok) { window.location.reload(); }
+          if (r.ok) { window.location.href = r.url; }
           else { createBtn.disabled = false; }
         }).catch(function () { createBtn.disabled = false; });
         return;
