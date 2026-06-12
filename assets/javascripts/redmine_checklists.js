@@ -110,6 +110,9 @@ var RedmineChecklists = (function () {
   /* ── Server-backed section event binding ───────────────────────────────────── */
 
   function bindSection(section) {
+    if (section._checklistsBound) return;
+    section._checklistsBound = true;
+
     section.addEventListener('click', function (e) {
       var t = e.target;
 
