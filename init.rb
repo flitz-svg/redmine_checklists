@@ -7,6 +7,7 @@ Redmine::Plugin.register :redmine_checklists do
 end
 
 require File.join(File.dirname(__FILE__), 'lib', 'redmine_checklists', 'hooks')
+require File.join(File.dirname(__FILE__), 'lib', 'redmine_checklists', 'controller_hooks')
 
 Rails.application.config.after_initialize do
   Issue.class_eval do
