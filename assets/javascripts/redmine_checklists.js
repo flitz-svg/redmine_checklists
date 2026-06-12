@@ -107,6 +107,15 @@ var RedmineChecklists = (function () {
     fileInput.value = '';
   }
 
+  /* ── Navigate without triggering Redmine's beforeunload warning ───────────── */
+
+  function navigate(url) {
+    document.querySelectorAll(
+      '.checklist-bulk-textarea, .checklist-new-title-input, .checklist-file-input'
+    ).forEach(function (el) { el.value = ''; });
+    window.location.href = url;
+  }
+
   /* ── Server-backed section event binding ───────────────────────────────────── */
 
   function bindSection(section) {
@@ -173,7 +182,7 @@ var RedmineChecklists = (function () {
         fetch(delCL.dataset.url, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken() }
-        }).then(function (r) { if (r.ok) window.location.href = r.url; });
+        }).then(function (r) { if (r.ok) navigate(r.url); });
         return;
       }
 
@@ -186,7 +195,7 @@ var RedmineChecklists = (function () {
         fetch(delIt.dataset.url, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken() }
-        }).then(function (r) { if (r.ok) window.location.href = r.url; });
+        }).then(function (r) { if (r.ok) navigate(r.url); });
         return;
       }
 
@@ -209,7 +218,7 @@ var RedmineChecklists = (function () {
           headers: { 'X-CSRF-Token': csrfToken() },
           body: fd
         }).then(function (r) {
-          if (r.ok) { window.location.href = r.url; }
+          if (r.ok) { navigate(r.url); }
           else { bulkSave.disabled = false; }
         }).catch(function () { bulkSave.disabled = false; });
         return;
@@ -231,7 +240,7 @@ var RedmineChecklists = (function () {
           headers: { 'X-CSRF-Token': csrfToken() },
           body: fd2
         }).then(function (r) {
-          if (r.ok) { window.location.href = r.url; }
+          if (r.ok) { navigate(r.url); }
           else { createBtn.disabled = false; }
         }).catch(function () { createBtn.disabled = false; });
         return;
