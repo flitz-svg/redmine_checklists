@@ -1,45 +1,40 @@
 /* ── Redmine Checklists plugin ─────────────────────────────────────────────── */
 
-/* Section wrapper */
-#checklists-section {
+/* Section wrapper — clear floats so it lands below the split columns in forms */
+.checklists-section {
+  clear: both;
   margin-top: 10px;
 }
 
+/* ── Header ────────────────────────────────────────────────────────────────── */
+
 .checklists-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
   font-size: 0.9em;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 4px;
+  margin-bottom: 6px;
 }
 
+/* Title and button sit inline, button immediately after the label */
 .checklists-header strong {
-  flex: 1;
   font-size: 1em;
   color: #333;
+  margin-right: 6px;
 }
 
-/* ── Individual checklist block ────────────────────────────────────────────── */
+/* ── Individual checklist block — no card, just native list feel ───────────── */
 
 .checklist-block {
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 8px 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  padding-left: 0;
 }
 
 .checklist-block-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .checklist-block-title {
-  flex: 1;
   font-weight: bold;
   font-size: 0.9em;
   color: #333;
@@ -56,6 +51,7 @@
   opacity: 0;
   transition: opacity 0.15s;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .checklist-block:hover .checklist-delete-btn {
@@ -65,17 +61,17 @@
 /* ── Progress bar ──────────────────────────────────────────────────────────── */
 
 .checklist-progress-bar {
-  height: 6px;
+  height: 4px;
   background: #e0e0e0;
-  border-radius: 3px;
-  margin-bottom: 6px;
+  border-radius: 2px;
+  margin-bottom: 5px;
   overflow: hidden;
 }
 
 .checklist-progress-fill {
   height: 100%;
   background: #629632;
-  border-radius: 3px;
+  border-radius: 2px;
   transition: width 0.3s ease;
 }
 
@@ -83,22 +79,17 @@
 
 .checklist-items {
   list-style: none;
-  margin: 0;
+  margin: 0 0 2px 0;
   padding: 0;
 }
 
 .checklist-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 0;
+  gap: 5px;
+  padding: 2px 0;
   font-size: 0.85em;
   color: #333;
-  border-bottom: 1px dotted #eee;
-}
-
-.checklist-item:last-child {
-  border-bottom: none;
 }
 
 .checklist-item input[type="checkbox"] {
@@ -114,7 +105,7 @@
 
 .checklist-item--checked .checklist-item-subject {
   text-decoration: line-through;
-  color: #999;
+  color: #aaa;
 }
 
 .checklist-item-del {
@@ -130,38 +121,28 @@
 /* ── Add area (bulk) ───────────────────────────────────────────────────────── */
 
 .checklist-add-area {
-  margin-top: 6px;
-}
-
-.checklist-add-toggle-row {
-  font-size: 0.85em;
+  margin-top: 4px;
 }
 
 .checklist-add-toggle {
-  color: #628db6;
-  text-decoration: none;
-  font-size: 0.85em;
-}
-
-.checklist-add-toggle:hover {
-  text-decoration: underline;
+  font-size: 0.8em;
 }
 
 /* ── Bulk add panel ────────────────────────────────────────────────────────── */
 
 .checklist-add-panel {
-  margin-top: 6px;
-  padding: 8px;
-  background: #f5f8ff;
-  border: 1px dashed #628db6;
-  border-radius: 3px;
+  margin-top: 5px;
+  padding: 7px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 2px;
 }
 
 .checklist-bulk-textarea {
   width: 100%;
   box-sizing: border-box;
   font-size: 0.85em;
-  padding: 5px 7px;
+  padding: 4px 6px;
   border: 1px solid #ccc;
   border-radius: 2px;
   resize: vertical;
@@ -179,7 +160,7 @@
 /* ── File import row ───────────────────────────────────────────────────────── */
 
 .checklist-file-row {
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
 .checklist-file-label {
@@ -187,17 +168,12 @@
   align-items: center;
   gap: 4px;
   font-size: 0.8em;
-  color: #628db6;
+  color: #555;
   cursor: pointer;
-  padding: 3px 6px;
-  border: 1px solid #b0c8e0;
-  border-radius: 2px;
-  background: #fff;
-  transition: background 0.15s;
 }
 
 .checklist-file-label:hover {
-  background: #e8f0f8;
+  color: #628db6;
 }
 
 .checklist-file-input {
@@ -210,56 +186,28 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 6px;
-}
-
-/* ── Inline title edit (reserved) ──────────────────────────────────────────── */
-
-.checklist-inline-edit {
-  margin-bottom: 4px;
-}
-
-.checklist-title-form {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.checklist-title-input {
-  flex: 1;
-  font-size: 0.9em;
-  font-weight: bold;
-  padding: 3px 6px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  height: 26px;
-}
-
-.checklist-title-input:focus {
-  outline: none;
-  border-color: #628db6;
-  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+  margin-top: 5px;
 }
 
 /* ── New checklist form ────────────────────────────────────────────────────── */
 
 .checklist-new-form {
-  margin-top: 6px;
-  padding: 8px;
-  background: #f0f6ff;
-  border: 1px dashed #628db6;
-  border-radius: 3px;
+  margin-top: 5px;
+  padding: 7px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 2px;
 }
 
 .checklist-new-form-fields {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .checklist-new-title-input {
   font-size: 0.9em;
-  padding: 4px 8px;
+  padding: 3px 7px;
   border: 1px solid #ccc;
   border-radius: 2px;
   width: 100%;
@@ -276,13 +224,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-/* ── Edit notes separator ──────────────────────────────────────────────────── */
-
-.checklists-edit-separator {
-  border-top: 1px solid #ddd;
-  margin: 10px 0 8px;
 }
 
 /* ── Status icon (read-only mode) ──────────────────────────────────────────── */

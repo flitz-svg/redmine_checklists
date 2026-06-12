@@ -4,7 +4,6 @@
     <%= javascript_include_tag 'redmine_checklists', plugin: 'redmine_checklists' %>
   <% end %>
 
-  <div class="checklists-edit-separator"></div>
   <div class="checklists-section checklists-section--new"
        id="checklists-section-new"
        data-virtual="true"
@@ -59,6 +58,5 @@
   </div>
 
 <% else %>
-  <div class="checklists-edit-separator"></div>
   <%= render partial: 'checklists/section', locals: { issue: issue, section_ctx: 'form' } %>
 <% end %>
