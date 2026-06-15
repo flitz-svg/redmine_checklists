@@ -1,0 +1,272 @@
+/* ── Redmine Checklists plugin ─────────────────────────────────────────────── */
+
+/* ── Section wrapper ───────────────────────────────────────────────────────── */
+
+.checklists-section {
+  clear: both;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+
+.checklists-header {
+  margin-bottom: 5px;
+}
+
+.checklists-header strong {
+  font-size: 1em;
+  color: #555;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+/* ── Tabular form context (new issue / full edit form) ─────────────────────── */
+/*
+   Inside Redmine's .box.tabular the hook fires after the split columns.
+   We mimic the label (0–175 px) + value (starts at 180 px) layout manually
+   because .tabular p padding only auto-applies to <p> tags, not <div>.
+*/
+
+.tabular .checklists-section .checklists-header {
+  padding-left: 180px;
+  position: relative;
+  clear: left;
+  min-height: 1.8em;
+}
+
+.tabular .checklists-section .checklists-header strong {
+  position: absolute;
+  left: 0;
+  width: 175px;
+  text-align: right;
+  padding-right: 5px;
+  line-height: 1.8em;
+  color: #555;
+}
+
+/* Checklist blocks + new-form panel indented to match value column */
+.tabular .checklists-section [id^="checklists-list"],
+.tabular .checklists-section .checklist-new-form {
+  padding-left: 180px;
+  clear: left;
+}
+
+/* ── Individual checklist block ────────────────────────────────────────────── */
+
+.checklist-block {
+  margin-bottom: 10px;
+}
+
+.checklist-block-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.checklist-block-title {
+  font-weight: bold;
+  cursor: default;
+}
+
+.checklist-block-progress-label {
+  font-size: 0.8em;
+  color: #888;
+  white-space: nowrap;
+}
+
+.checklist-delete-btn {
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.checklist-block:hover .checklist-delete-btn {
+  opacity: 1;
+}
+
+/* ── Progress bar ──────────────────────────────────────────────────────────── */
+
+.checklist-progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.checklist-progress-fill {
+  height: 100%;
+  background: #629632;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* ── Items list ────────────────────────────────────────────────────────────── */
+
+.checklist-items {
+  list-style: none;
+  margin: 0 0 2px 0;
+  padding: 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 0;
+}
+
+.checklist-item input[type="checkbox"] {
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #629632;
+}
+
+.checklist-item-subject {
+  word-break: break-word;
+}
+
+.checklist-item--checked .checklist-item-subject {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.checklist-item-del {
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.checklist-item:hover .checklist-item-del {
+  opacity: 1;
+}
+
+/* ── Add area (bulk) ───────────────────────────────────────────────────────── */
+
+.checklist-add-area {
+  margin-top: 4px;
+}
+
+.checklist-add-toggle {
+  line-height: 20px;
+}
+
+/* ── Bulk add panel ────────────────────────────────────────────────────────── */
+
+.checklist-add-panel {
+  margin-top: 5px;
+  padding: 4px 0;
+}
+
+.checklist-bulk-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.85em;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+  color: #333;
+}
+
+.checklist-bulk-textarea:focus {
+  outline: none;
+  border-color: #628db6;
+  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+}
+
+/* ── File import ───────────────────────────────────────────────────────────── */
+
+.checklist-file-row {
+  margin-top: 4px;
+}
+
+/* Simple text link — no sprite icon, fully visible in all contexts */
+.checklist-file-label {
+  font-size: 0.85em;
+  color: #169;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+.checklist-file-label:hover {
+  color: #000;
+}
+
+.checklist-file-input {
+  display: none;
+}
+
+/* ── Panel actions row ─────────────────────────────────────────────────────── */
+
+.checklist-add-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+/* ── New checklist form ────────────────────────────────────────────────────── */
+
+.checklist-new-form {
+  margin-top: 5px;
+  padding: 4px 0;
+}
+
+.checklist-new-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.checklist-new-title-input {
+  font-size: 0.9em;
+  padding: 3px 7px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checklist-new-title-input:focus {
+  outline: none;
+  border-color: #628db6;
+  box-shadow: 0 0 0 2px rgba(98, 141, 182, 0.2);
+}
+
+.checklist-new-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Status icon (read-only mode) ──────────────────────────────────────────── */
+
+.checklist-item-status-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}

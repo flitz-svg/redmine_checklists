@@ -1,0 +1,79 @@
+<div class="checklist-block" id="checklist-<%= checklist.id %>">
+  <div class="checklist-block-header">
+    <span class="checklist-block-title">
+      <%= h(checklist.title) %>
+    </span>
+    <span class="checklist-block-progress-label">
+      <%= checklist.checked_count %>/<%= checklist.total_count %>
+    </span>
+    <% if can_edit %>
+      <button type="button"
+              class="icon icon-del checklist-delete-btn"
+              data-url="<%= checklist_path(checklist) %>"
+              data-checklist-confirm="<%= l(:text_are_you_sure) %>"
+              title="<%= l(:button_delete) %>"></button>
+    <% end %>
+  </div>
+
+  <% if checklist.total_count > 0 %>
+    <div class="checklist-progress-bar">
+      <div class="checklist-progress-fill"
+           id="checklist-progress-fill-<%= checklist.id %>"
+           style="width: <%= checklist.progress_percent %>%"></div>
+    </div>
+  <% end %>
+
+  <ul class="checklist-items" id="checklist-items-<%= checklist.id %>">
+    <% checklist.issue_checklist_items.each do |item| %>
+      <%= render partial: 'checklist_items/item',
+                 locals: { item: item, can_edit: can_edit } %>
+    <% end %>
+  </ul>
+
+  <% if can_edit %>
+    <div class="checklist-add-area" id="checklist-add-area-<%= checklist.id %>">
+      <div class="checklist-add-toggle-row">
+        <a href="#"
+           class="checklist-add-toggle icon icon-add"
+           data-panel="checklist-add-panel-<%= checklist.id %>">
+          <%= l(:label_checklist_add_items) %>
+        </a>
+      </div>
+
+      <%# No <form> here — uses AJAX to avoid nesting inside Redmine's own forms %>
+      <div class="checklist-add-panel" id="checklist-add-panel-<%= checklist.id %>" style="display:none;">
+        <textarea id="checklist-bulk-textarea-<%= checklist.id %>"
+                  class="checklist-bulk-textarea"
+                  placeholder="<%= l(:label_checklist_items_placeholder) %>"
+                  rows="4"></textarea>
+
+        <div class="checklist-file-row">
+          <label class="checklist-file-label"
+                 for="checklist-file-<%= checklist.id %>">
+            <%= l(:label_checklist_import_file) %>
+            <input type="file"
+                   id="checklist-file-<%= checklist.id %>"
+                   accept=".txt,.csv"
+                   class="checklist-file-input"
+                   data-textarea="checklist-bulk-textarea-<%= checklist.id %>">
+          </label>
+        </div>
+
+        <div class="checklist-add-actions">
+          <button type="button"
+                  class="button checklist-bulk-save-btn"
+                  data-url="<%= bulk_checklist_items_path(checklist) %>"
+                  data-textarea="checklist-bulk-textarea-<%= checklist.id %>"
+                  data-file="checklist-file-<%= checklist.id %>">
+            <%= l(:button_save) %>
+          </button>
+          <a href="#"
+             class="checklist-add-cancel"
+             data-panel="checklist-add-panel-<%= checklist.id %>">
+            <%= l(:button_cancel) %>
+          </a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
