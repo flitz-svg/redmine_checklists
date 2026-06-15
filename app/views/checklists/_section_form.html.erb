@@ -1,0 +1,69 @@
+<% if issue.new_record? %>
+  <% unless content_for?(:redmine_checklists_assets) %>
+    <% content_for :redmine_checklists_assets do %>1<% end %>
+    <% content_for :header_tags do %>
+      <%= stylesheet_link_tag  'redmine_checklists', plugin: 'redmine_checklists' %>
+      <%= javascript_include_tag 'redmine_checklists', plugin: 'redmine_checklists' %>
+    <% end %>
+  <% end %>
+
+  <div class="checklists-section checklists-section--new"
+       id="checklists-section-new"
+       data-virtual="true"
+       data-i18n-title-placeholder="<%= l(:label_checklist_title_placeholder) %>"
+       data-i18n-add-items="<%= l(:label_checklist_add_items) %>"
+       data-i18n-items-placeholder="<%= l(:label_checklist_items_placeholder) %>"
+       data-i18n-import-file="<%= l(:label_checklist_import_file) %>"
+       data-i18n-create="<%= l(:button_create_checklist) %>"
+       data-i18n-save="<%= l(:button_save) %>"
+       data-i18n-cancel="<%= l(:button_cancel) %>"
+       data-i18n-delete="<%= l(:button_delete) %>">
+
+    <%# Hidden field inside the Redmine issue form — top-level name to avoid issue attr conflicts %>
+    <input type="hidden" name="checklists_data" id="checklists-data-field" value="[]">
+
+    <div class="checklists-header">
+      <strong><%= l(:label_checklists) %></strong>
+      <a href="#"
+         class="icon icon-add checklists-add-btn"
+         id="btn-add-checklist-new"
+         data-target="checklist-new-form-new">
+        <%= l(:button_add_checklist) %>
+      </a>
+    </div>
+
+    <div id="checklists-list-new"></div>
+
+    <div class="checklist-new-form"
+         id="checklist-new-form-new"
+         data-btn="btn-add-checklist-new"
+         style="display:none;">
+      <div class="checklist-new-form-fields">
+        <input type="text"
+               id="virtual-new-checklist-title"
+               class="checklist-new-title-input"
+               placeholder="<%= l(:label_checklist_title_placeholder) %>"
+               maxlength="255"
+               autocomplete="off">
+        <div class="checklist-new-actions">
+          <button type="button" class="button virtual-create-btn">
+            <%= l(:button_create_checklist) %>
+          </button>
+          <a href="#"
+             class="checklists-cancel-btn"
+             data-form="checklist-new-form-new"
+             data-btn="btn-add-checklist-new">
+            <%= l(:button_cancel) %>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%# Existing issue: render the editable checklists inside the form too. On the
+    show page this copy lives in the (initially hidden) inline update form, while
+    the always-visible copy is rendered up top by view_issues_show_details_bottom.
+    Both copies share the same data and are kept in sync by the JS. %>
+<% else %>
+  <%= render partial: 'checklists/section', locals: { issue: issue, section_ctx: 'form' } %>
+<% end %>
